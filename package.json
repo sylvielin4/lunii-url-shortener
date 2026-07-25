@@ -1,0 +1,35 @@
+{
+  "name": "lunii-url-shortener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sylvielin4/lunii-url-shortener.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sylvielin4/lunii-url-shortener/issues"
+  },
+  "homepage": "https://github.com/sylvielin4/lunii-url-shortener#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.1.1",
+    "prettier": "^3.9.6",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
+  }
+}

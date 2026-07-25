@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { initDatabase } from "./db/init";
 
 const app = express();
 app.use(cors());
@@ -10,4 +11,13 @@ app.get("/", (_req, res) => {
 });
 
 const PORT = 3000;
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+
+async function start() {
+  await initDatabase();
+  app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+}
+
+start().catch((error) => {
+  console.error("Failed to start server:", error);
+  process.exit(1);
+});

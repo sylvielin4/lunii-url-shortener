@@ -2,6 +2,7 @@ import ShortUrl from "../../models/short-url.model";
 import {
   FindByShortUrlParams,
   FindByShortUrlReturn,
+  IncrementClicksParams,
   SaveShortUrlParams,
   SaveShortUrlReturn,
   ShortUrlServiceInterface,
@@ -27,5 +28,10 @@ export class ShortUrlService implements ShortUrlServiceInterface {
     }
 
     return record.get({ plain: true });
+  }
+
+  async incrementClicks(params: IncrementClicksParams): Promise<void> {
+    const { shortUrl } = params;
+    await ShortUrl.increment("nbClicks", { where: { shortUrl } });
   }
 }

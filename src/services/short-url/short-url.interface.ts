@@ -13,7 +13,12 @@ export type FindByShortUrlParams = {
 
 export type FindByShortUrlReturn = Promise<ShortUrlAttributes | null>;
 
+export type IncrementClicksParams = {
+  shortUrl: string;
+};
+
 export interface ShortUrlServiceInterface {
   saveShortUrl(params: SaveShortUrlParams): SaveShortUrlReturn;
   findByShortUrl(params: FindByShortUrlParams): FindByShortUrlReturn;
+  incrementClicks(params: IncrementClicksParams): Promise<void>;
 }

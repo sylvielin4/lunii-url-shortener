@@ -1,6 +1,7 @@
 import {
   FindByShortUrlParams,
   FindByShortUrlReturn,
+  IncrementClicksParams,
   SaveShortUrlParams,
   SaveShortUrlReturn,
   ShortUrlServiceInterface,
@@ -12,6 +13,10 @@ export class ShortUrlServiceMock implements ShortUrlServiceInterface {
   }
 
   async findByShortUrl(_params: FindByShortUrlParams): FindByShortUrlReturn {
+    throw new Error("Not implemented");
+  }
+
+  async incrementClicks(_params: IncrementClicksParams): Promise<void> {
     throw new Error("Not implemented");
   }
 }

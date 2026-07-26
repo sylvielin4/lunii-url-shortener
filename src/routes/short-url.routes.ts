@@ -1,9 +1,7 @@
 import { Router } from "express";
-import {
-  createShortUrlController,
-  getAnalyticsController,
-  redirectToOriginalUrlController,
-} from "../controllers/short-url.controller";
+import { createShortUrlController } from "../controllers/create-short-url.controller";
+import { getAnalyticsController } from "../controllers/get-analytics.controller";
+import { redirectToOriginalUrlController } from "../controllers/get-original-url.controller";
 
 const router = Router();
 

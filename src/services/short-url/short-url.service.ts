@@ -1,5 +1,6 @@
-import ShortUrl from "../../models/short-url.model";
+import ShortUrl, { ShortUrlAttributes } from "../../models/short-url.model";
 import {
+  FindAllShortUrlsResult,
   FindByShortUrlParams,
   FindByShortUrlReturn,
   IncrementClicksParams,
@@ -33,5 +34,9 @@ export class ShortUrlService implements ShortUrlServiceInterface {
   async incrementClicks(params: IncrementClicksParams): Promise<void> {
     const { shortUrl } = params;
     await ShortUrl.increment("nbClicks", { where: { shortUrl } });
+  }
+
+  async findAllShortUrls(): FindAllShortUrlsResult {
+    return ShortUrl.findAll({ raw: true });
   }
 }

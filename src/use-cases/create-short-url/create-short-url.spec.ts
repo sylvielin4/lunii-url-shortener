@@ -1,9 +1,11 @@
+import { nanoid } from "nanoid";
 import { CreateShortUrlUseCase } from "./create-short-url";
 import { ShortUrlServiceMock } from "../../services/short-url/short-url.service.mock";
 import { createShortUrlMock } from "../../test/mocks/short-url.mock";
-import * as generateShortCodeModule from "../../utils/generateShortCode";
 
-jest.mock("../../utils/generateShortCode");
+jest.mock("nanoid");
+
+const mockedNanoid = jest.mocked(nanoid);
 
 describe("CreateShortUrlUseCase", () => {
   let shortUrlService: ShortUrlServiceMock;
@@ -22,9 +24,7 @@ describe("CreateShortUrlUseCase", () => {
     const originalUrl = "https://www.lunii.com";
     const generatedShortUrl = "4hxNeK";
 
-    jest
-      .spyOn(generateShortCodeModule, "generateShortCode")
-      .mockReturnValue(generatedShortUrl);
+    mockedNanoid.mockReturnValue(generatedShortUrl);
     shortUrlService.findByShortUrl = jest.fn().mockResolvedValue(null);
     shortUrlService.saveShortUrl = jest.fn().mockResolvedValue(
       createShortUrlMock({
@@ -53,10 +53,10 @@ describe("CreateShortUrlUseCase", () => {
     const newShortUrl = "ok45678";
     const originalUrl = "https://other.com";
 
-    jest
-      .spyOn(generateShortCodeModule, "generateShortCode")
+    mockedNanoid
       .mockReturnValueOnce(duplicateShortUrl)
       .mockReturnValueOnce(newShortUrl);
+
     shortUrlService.findByShortUrl = jest
       .fn()
       .mockResolvedValueOnce(
@@ -66,6 +66,7 @@ describe("CreateShortUrlUseCase", () => {
         })
       )
       .mockResolvedValueOnce(null);
+
     shortUrlService.saveShortUrl = jest.fn().mockResolvedValue(
       createShortUrlMock({
         id: 2,
@@ -76,7 +77,7 @@ describe("CreateShortUrlUseCase", () => {
 
     const result = await createShortUrlUseCase.handle(originalUrl);
 
-    expect(generateShortCodeModule.generateShortCode).toHaveBeenCalledTimes(2);
+    expect(mockedNanoid).toHaveBeenCalledTimes(2);
     expect(shortUrlService.findByShortUrl).toHaveBeenCalledWith({
       shortUrl: duplicateShortUrl,
     });

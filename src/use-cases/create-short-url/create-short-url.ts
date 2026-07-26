@@ -1,6 +1,8 @@
+import { nanoid } from "nanoid";
 import { ShortUrlAttributes } from "../../models/short-url.model";
 import { ShortUrlServiceInterface } from "../../services/short-url/short-url.interface";
-import { generateShortCode } from "../../utils/generateShortCode";
+
+const SHORT_URL_LENGTH = 7;
 
 export type CreateShortUrlReturn = Pick<
   ShortUrlAttributes,
@@ -19,7 +21,7 @@ export class CreateShortUrlUseCase {
   }
 
   async handle(originalUrl: string): Promise<CreateShortUrlReturn> {
-    const shortUrl = generateShortCode();
+    const shortUrl = nanoid(SHORT_URL_LENGTH);
 
     const existingUrl = await this.shortUrlService.findByShortUrl({ shortUrl });
 

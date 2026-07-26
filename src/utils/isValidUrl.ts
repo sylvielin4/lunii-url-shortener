@@ -1,0 +1,12 @@
+export function isValidUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+
+    return (
+      ["http:", "https:"].includes(parsed.protocol) &&
+      parsed.hostname.includes(".")
+    );
+  } catch {
+    return false;
+  }
+}

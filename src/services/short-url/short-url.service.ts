@@ -1,5 +1,7 @@
 import ShortUrl from "../../models/short-url.model";
 import {
+  FindByShortUrlParams,
+  FindByShortUrlReturn,
   SaveShortUrlParams,
   SaveShortUrlReturn,
   ShortUrlServiceInterface,
@@ -12,6 +14,17 @@ export class ShortUrlService implements ShortUrlServiceInterface {
       originalUrl,
       shortUrl,
     });
+
+    return record.get({ plain: true });
+  }
+
+  async findByShortUrl(params: FindByShortUrlParams): FindByShortUrlReturn {
+    const { shortUrl } = params;
+    const record = await ShortUrl.findOne({ where: { shortUrl } });
+
+    if (!record) {
+      return null;
+    }
 
     return record.get({ plain: true });
   }

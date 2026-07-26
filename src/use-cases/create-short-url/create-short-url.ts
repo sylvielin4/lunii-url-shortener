@@ -21,6 +21,12 @@ export class CreateShortUrlUseCase {
   async handle(originalUrl: string): Promise<CreateShortUrlReturn> {
     const shortUrl = generateShortCode();
 
+    const existingUrl = await this.shortUrlService.findByShortUrl({ shortUrl });
+
+    if (existingUrl) {
+      return this.handle(originalUrl);
+    }
+
     const result = await this.shortUrlService.saveShortUrl({
       originalUrl,
       shortUrl,

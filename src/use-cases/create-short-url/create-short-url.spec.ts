@@ -25,6 +25,7 @@ describe("CreateShortUrlUseCase", () => {
     jest
       .spyOn(generateShortCodeModule, "generateShortCode")
       .mockReturnValue(generatedShortUrl);
+    shortUrlService.findByShortUrl = jest.fn().mockResolvedValue(null);
     shortUrlService.saveShortUrl = jest.fn().mockResolvedValue(
       createShortUrlMock({
         originalUrl,
@@ -34,6 +35,9 @@ describe("CreateShortUrlUseCase", () => {
 
     const result = await createShortUrlUseCase.handle(originalUrl);
 
+    expect(shortUrlService.findByShortUrl).toHaveBeenCalledWith({
+      shortUrl: generatedShortUrl,
+    });
     expect(shortUrlService.saveShortUrl).toHaveBeenCalledWith({
       originalUrl,
       shortUrl: generatedShortUrl,
@@ -42,5 +46,47 @@ describe("CreateShortUrlUseCase", () => {
       originalUrl,
       shortUrl: generatedShortUrl,
     });
+  });
+
+  it("should regenerate the short url when a duplicate exists", async () => {
+    const duplicateShortUrl = "dup123";
+    const newShortUrl = "ok45678";
+    const originalUrl = "https://other.com";
+
+    jest
+      .spyOn(generateShortCodeModule, "generateShortCode")
+      .mockReturnValueOnce(duplicateShortUrl)
+      .mockReturnValueOnce(newShortUrl);
+    shortUrlService.findByShortUrl = jest
+      .fn()
+      .mockResolvedValueOnce(
+        createShortUrlMock({
+          originalUrl,
+          shortUrl: duplicateShortUrl,
+        })
+      )
+      .mockResolvedValueOnce(null);
+    shortUrlService.saveShortUrl = jest.fn().mockResolvedValue(
+      createShortUrlMock({
+        id: 2,
+        originalUrl,
+        shortUrl: newShortUrl,
+      })
+    );
+
+    const result = await createShortUrlUseCase.handle(originalUrl);
+
+    expect(generateShortCodeModule.generateShortCode).toHaveBeenCalledTimes(2);
+    expect(shortUrlService.findByShortUrl).toHaveBeenCalledWith({
+      shortUrl: duplicateShortUrl,
+    });
+    expect(shortUrlService.findByShortUrl).toHaveBeenCalledWith({
+      shortUrl: newShortUrl,
+    });
+    expect(shortUrlService.saveShortUrl).toHaveBeenCalledWith({
+      originalUrl,
+      shortUrl: newShortUrl,
+    });
+    expect(result.shortUrl).toBe(newShortUrl);
   });
 });

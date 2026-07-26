@@ -7,6 +7,13 @@ export type SaveShortUrlParams = {
 
 export type SaveShortUrlReturn = Promise<ShortUrlAttributes>;
 
+export type FindByShortUrlParams = {
+  shortUrl: string;
+};
+
+export type FindByShortUrlReturn = Promise<ShortUrlAttributes | null>;
+
 export interface ShortUrlServiceInterface {
   saveShortUrl(params: SaveShortUrlParams): SaveShortUrlReturn;
+  findByShortUrl(params: FindByShortUrlParams): FindByShortUrlReturn;
 }

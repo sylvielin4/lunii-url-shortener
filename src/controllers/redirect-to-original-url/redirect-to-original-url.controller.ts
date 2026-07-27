@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { getOriginalUrlUseCase } from "../../use-cases/get-original-url";
 import { NotFoundError } from "../../use-cases/get-original-url/get-original-url.errors";
-import { getOriginalUrlSchema } from "./get-original-url.schema";
+import { redirectToOriginalUrlSchema } from "./redirect-to-original-url.schema";
 
 export async function redirectToOriginalUrlController(
   req: Request,
   res: Response
 ) {
-  const parsedParams = getOriginalUrlSchema.safeParse(req.params);
+  const parsedParams = redirectToOriginalUrlSchema.safeParse(req.params);
 
   if (!parsedParams.success) {
     return res.status(400).json({ error: "invalid short url" });

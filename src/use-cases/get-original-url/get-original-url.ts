@@ -1,6 +1,6 @@
+import { NotFoundError } from "../../errors";
 import { ShortUrlAttributes } from "../../models/short-url.model";
 import { ShortUrlServiceInterface } from "../../services/short-url/short-url.interface";
-import { NotFoundError } from "./get-original-url.errors";
 
 export type GetOriginalUrlReturn = Promise<
   Pick<ShortUrlAttributes, "originalUrl">

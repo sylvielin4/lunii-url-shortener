@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import shortUrlRoutes from "./routes/short-url.routes";
+import { errorHandlerMiddleware } from "./middlewares/error-handler.middleware";
 
 const app = express();
 
@@ -12,5 +13,6 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/api/shorturl", shortUrlRoutes);
+app.use(errorHandlerMiddleware);
 
 export default app;

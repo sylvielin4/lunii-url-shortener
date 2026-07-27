@@ -1,6 +1,7 @@
-import { GetOriginalUrlUseCase } from "./get-original-url";
+import { NotFoundError } from "../../errors";
 import { ShortUrlServiceMock } from "../../services/short-url/short-url.service.mock";
 import { createShortUrlMock } from "../../test/mocks/short-url.mock";
+import { GetOriginalUrlUseCase } from "./get-original-url";
 
 describe("GetOriginalUrlUseCase", () => {
   let shortUrlService: ShortUrlServiceMock;
@@ -38,7 +39,10 @@ describe("GetOriginalUrlUseCase", () => {
     shortUrlService.findByShortUrl = jest.fn().mockResolvedValue(null);
     shortUrlService.incrementClicks = jest.fn();
 
-    await expect(getOriginalUrlUseCase.handle(unknownShortUrl)).rejects.toThrow(
+    const promise = getOriginalUrlUseCase.handle(unknownShortUrl);
+
+    await expect(promise).rejects.toBeInstanceOf(NotFoundError);
+    await expect(promise).rejects.toThrow(
       "original url not found for short url: unknown"
     );
     expect(shortUrlService.incrementClicks).not.toHaveBeenCalled();

@@ -8,7 +8,7 @@ URL shortening API built with Express, TypeScript, and SQLite. This API can be u
 - HTTP 302 redirect to the original URL
 - Click counting on each redirect
 - Analytics endpoint listing URLs and their click counts
-- URL validation and short-code collision handling
+- URL validation (Zod) and short-code collision handling
 
 ## Technical choices
 
@@ -17,7 +17,7 @@ URL shortening API built with Express, TypeScript, and SQLite. This API can be u
 - **nanoid** for URL-safe short codes, with collision handling via DB lookup + retry.
 - **Jest** + **Supertest** for unit tests (with service mocks) and e2e tests (in-process, no open port).
 - **Dependency injection** through a `ShortUrlServiceInterface` so use-cases are independent from the ORM.
-- **URL validation** via the `isValidUrl` helper to match the required `invalid url` behavior.
+- **Zod** for request body/params validation
 
 ## Prerequisites
 
@@ -85,6 +85,7 @@ GET /api/shorturl/:shortUrl
 ```
 
 - `302` — redirect to the original URL (increments `nbClicks`)
+- `400` — `{ "error": "invalid short url" }` (must be 7 URL-safe characters: `A-Za-z0-9_-`)
 - `404` — `{ "error": "original url not found for short url: ..." }`
 
 ### Analytics
@@ -148,7 +149,6 @@ E2E tests use a dedicated SQLite file per Jest worker, isolated from `data.sqlit
 ## Possible next steps
 
 - Postgres (or another store) behind the same service interface
-- Use Zod to validate request bodies/params with consistent errors.
 - Rate limiting / API keys for write endpoints
 - Link expiration (TTL) and custom aliases
 - Pagination on analytics

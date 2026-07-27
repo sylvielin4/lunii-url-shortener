@@ -30,4 +30,11 @@ describe("GET /api/shorturl/:shortUrl", () => {
       error: "original url not found for short url: unknown",
     });
   });
+
+  it("should return an error for an invalid short url", async () => {
+    const { status, body } = await request(app).get("/api/shorturl/ab");
+
+    expect(status).toBe(400);
+    expect(body).toEqual({ error: "invalid short url" });
+  });
 });

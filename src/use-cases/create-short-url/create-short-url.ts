@@ -1,8 +1,7 @@
 import { nanoid } from "nanoid";
+import { SHORT_URL_LENGTH } from "../../constants/short-url";
 import { ShortUrlAttributes } from "../../models/short-url.model";
 import { ShortUrlServiceInterface } from "../../services/short-url/short-url.interface";
-
-const SHORT_URL_LENGTH = 7;
 
 export type CreateShortUrlReturn = Pick<
   ShortUrlAttributes,

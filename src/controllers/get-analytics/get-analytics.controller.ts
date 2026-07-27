@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAnalyticsUseCase } from "../use-cases/get-analytics";
+import { getAnalyticsUseCase } from "../../use-cases/get-analytics";
 
 export async function getAnalyticsController(_req: Request, res: Response) {
   try {
